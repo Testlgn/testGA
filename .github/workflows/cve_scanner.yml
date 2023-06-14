@@ -1,5 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
+# This is a workflow to scan CVEs from the external_dependencies.json file.
 name: CVE scanner
 
 # Controls when the workflow will run
@@ -39,40 +38,8 @@ jobs:
           path: cache
           key: Linux-cve-bin-tool-${{ steps.get-date.outputs.date }}
       - name: Install CVE Binary Tool
-        # We are using latest development version of CVE Binary Tool
-        # because current PyPI version don't have features like config file support,
-        # generating HTML report etc.
+        # We are using PyPI version.
         run: pip install cve-bin-tool
-        #|
-        #  [[ -e cache ]] && mkdir -p .cache && mv cache ~/.cache/cve-bin-tool
-        #  pip install git+https://github.com/intel/cve-bin-tool@v3.2.1
-      # In case you prefer current PyPI version, you need to hard code CLI options
-      # for cve-bin-tool in the action itself and have to use CSV or JSON as output format.
-      # pip install cve-bin-tool
-      #- name: Create dependencies file
-      #  run: echo '[{"vendor":"haxx","product":"libcurl","version":"7.60.0"},
-      #              {"vendor":"haxx","product":"curl","version":"7.60.0"},
-      #              {"vendor":"redhat","product":"bzip2","version":"1.0.8"},
-      #              {"vendor":"DaveGamble","product":"cJSON","version":"1.7.12"},
-      #              {"vendor":"python","product":"cPython","version":"3.9.9"},
-      #              {"vendor":"google","product":"GoogleTest","version":"1.11.0"},
-      #              {"vendor":"jemalloc","product":"jemalloc","version":"5.2.1"},
-      #              {"vendor":"libarchive","product":"libarchive","version":"3.5.1"},
-      #              {"vendor":"libdb","product":"libdb","version":"18.1.40"},
-      #              {"vendor":"libffi","product":"libffi","version":"3.2.1"},
-      #              {"vendor":"libpcre2","product":"libpcre2","version":"10.34"},
-      #              {"vendor":"libplist","product":"libplist","version":"2.2.0"},
-      #              {"vendor":"libYAML","product":"libYAML","version":"0.1.7"},
-      #              {"vendor":"audit-userspace","product":"audit-userspace","version":"2.8.4"},
-      #              {"vendor":"msgpack","product":"msgpack","version":"3.1.1"},
-      #              {"vendor":"nlohmann","product":"nlohmann","version":"3.7.3"},
-      #              {"vendor":"openssl","product":"openssl","version":"1.1.1l"},
-      #              {"vendor":"pacman","product":"pacman","version":"5.2.2"},
-      #              {"vendor":"popt","product":"popt","version":"1.16"},
-      #              {"vendor":"procps","product":"procps","version":"2.8.3"},
-      #              {"vendor":"redhat","product":"rpm","version":"4.16.1.3"},
-      #              {"vendor":"sqlite","product":"sqlite","version":"3.36.0"},
-      #              {"vendor":"zlib","product":"zlib","version":"1.2.11"}]' >> /tmp/external_dependencies.json
       - name: Scan packages
         # Here, we are scanning built wheel which is situated in /dist directory
         # Python stores built packages in /dist directory.
